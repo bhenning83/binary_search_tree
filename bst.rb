@@ -80,6 +80,16 @@ class Tree
     end
     next_biggest
   end
+
+  def level_order(root = @root, output = [], queue = [])
+    return output if root.nil?
+    output << root.data
+    queue << root.left_child unless root.left_child.nil?
+    queue << root.right_child unless root.right_child.nil?
+    root = queue.shift
+    level_order(root, output, queue)
+  end
+
 end
 
 test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
@@ -87,8 +97,4 @@ test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
 original = Tree.new(test)
 original.insert(6)
 original.insert(83)
-puts
-p original
-puts
-original.delete(5)
-p original
+p original.level_order
