@@ -36,29 +36,34 @@ class Tree
   def insert(value, root = @root)
     new_node = Node.new(value)
     if new_node < root
-      if root.left_child.nil?
-        root.left_child = new_node 
-      else
-        insert(value, root.left_child)
-      end
+      return root.left_child = new_node if root.left_child.nil?
+      insert(value, root.left_child)
     elsif new_node > root
-      if root.right_child.nil?
-        root.right_child = new_node
-      else
-        insert(value, root.right_child)
-      end
+      return root.right_child = new_node if root.right_child.nil?
+      insert(value, root.right_child)
+    end
+  end
+
+  def delete(value, root = @root)
+  end
+  
+  def find(value, root = @root)
+    return 'not included' if root.data == nil
+    return root if root.data == value
+    if value < root.data
+      find(value, root = root.left_child)
+    else
+      find(value, root = root.right_child)
     end
   end
 end
 
-test = [1, 2, 4, 7, 4, 3]
+test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
 
 original = Tree.new(test)
-p original
-puts
-new = original.insert(6)
-
-p new
+original.insert(6)
+original.insert(83)
 puts
 p original
-
+p original.find(6)
+p original.find(83)
