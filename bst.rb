@@ -19,6 +19,7 @@ class Tree
   def initialize(ary)
     @ary = ary.sort.uniq
     @root = build_tree(@ary)
+    @parent = nil
   end
 
   def build_tree(ary)
@@ -45,16 +46,39 @@ class Tree
   end
 
   def delete(value, root = @root)
+    root = find(value)
+    root.data = nil if root.left_child.nil? && root.right_child.nil?
+    if root.left_child.nil?
+      @parent.right_child = root.right_child
+    elsif root.right_child.nil?
+      @parent.left_child = root.left_child
+    else
+      next_biggest = find_next_biggest(root)
+      temp_node = next_biggest.dup
+      delete(next_biggest.data)
+      root.data = temp_node.data
+    end
   end
   
   def find(value, root = @root)
-    return 'not included' if root.data == nil
+    return 'value not included' if root.data == nil
     return root if root.data == value
     if value < root.data
+      @parent = root
       find(value, root = root.left_child)
     else
+      @parent = root
       find(value, root = root.right_child)
     end
+  end
+
+  def find_next_biggest(root)
+    next_level = root.right_child
+    until next_level.nil?
+      next_biggest = next_level
+      next_level = next_level.left_child
+    end
+    next_biggest
   end
 end
 
@@ -65,5 +89,6 @@ original.insert(6)
 original.insert(83)
 puts
 p original
-p original.find(6)
-p original.find(83)
+puts
+original.delete(5)
+p original
