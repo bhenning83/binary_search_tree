@@ -90,6 +90,30 @@ class Tree
     level_order(root, output, queue)
   end
 
+  def inorder(root = @root, output = [])
+    return if root.nil?
+    inorder(root.left_child, output)
+    output << root.data
+    inorder(root.right_child, output)
+    output
+  end
+
+  def preorder(root = @root, output = [])
+    return if root.nil?
+    output << root.data
+    preorder(root.left_child, output)
+    preorder(root.right_child, output)
+    output
+  end
+
+  def postorder(root = @root, output = [])
+    return if root.nil?
+    postorder(root.left_child, output)
+    postorder(root.right_child, output)
+    output << root.data
+    output
+  end
+
 end
 
 test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
@@ -98,3 +122,6 @@ original = Tree.new(test)
 original.insert(6)
 original.insert(83)
 p original.level_order
+p original.inorder
+p original.preorder
+p original.postorder
