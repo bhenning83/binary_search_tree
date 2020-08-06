@@ -139,7 +139,7 @@ end
 
 test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
 
-array = Array.new(5) { rand(1..100) }
+array = Array.new(15) { rand(1..100) }
 tree = Tree.new(array)
 p tree.balanced?
 p tree.level_order
@@ -152,14 +152,10 @@ tree.insert(196)
 tree.insert(195)
 tree.insert(194)
 tree.insert(198)
-p tree.height
 p tree.balanced?
 tree.rebalance(tree.root)
+p tree.balanced?
 p tree.level_order
 p tree.preorder
 p tree.postorder
 p tree.inorder
-p tree.balanced?
-p tree
-puts
-puts
