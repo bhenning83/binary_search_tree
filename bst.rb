@@ -17,12 +17,13 @@ end
 class Tree
   attr_accessor :root, :ary
   def initialize(ary)
-    @ary = ary.sort.uniq
+    @ary = ary
     @root = build_tree(@ary)
     @parent = nil
   end
 
   def build_tree(ary)
+    ary = ary.uniq.sort
     return nil if ary.empty?
     return Node.new(ary[0]) if ary.length == 1
     midpoint = ary.length / 2
@@ -36,6 +37,7 @@ class Tree
 
   def insert(value, root = @root)
     new_node = Node.new(value)
+    # @ary << new_node.data
     if new_node < root
       return root.left_child = new_node if root.left_child.nil?
       insert(value, root.left_child)
@@ -61,7 +63,7 @@ class Tree
   end
   
   def find(value, root = @root)
-    return 'value not included' if root.data == nil
+    return 'value not included' if root.data.nil?
     return root if root.data == value
     if value < root.data
       @parent = root
@@ -114,29 +116,50 @@ class Tree
     output
   end
 
-  def height(root = @root, counter = 0)
-    return counter - 1 if root.nil?
+  def height(root = @root, counter = 0, ary = [])
+    return ary.max if root.nil?
+    ary << counter
     counter += 1
-    height(root.left_child, counter)
-    height(root.right_child, counter)
+    height(root.left_child, counter, ary)
+    height(root.right_child, counter, ary)
   end
 
   def balanced?(root = @root)
-    return true if height(root.left_child) - height(root.right_child) <= 1
-    return true if height(root.right_child) - height(root.left_child) <= 1
+    left = height(root.left_child)
+    right = height(root.right_child)
+    return true if (left - right).abs <=1
     return false
   end
 
   def rebalance(tree)
     level = level_order(tree)
-    build_tree(level)
+    @root = build_tree(level)
   end
 end
 
 test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
 
-original = Tree.new(test)
-original.insert(6)
-original.insert(83)
-p original.height()
-p original.balanced?
+array = Array.new(5) { rand(1..100) }
+tree = Tree.new(array)
+p tree.balanced?
+p tree.level_order
+p tree.preorder
+p tree.postorder
+p tree.inorder
+tree.insert(199)
+tree.insert(197)
+tree.insert(196)
+tree.insert(195)
+tree.insert(194)
+tree.insert(198)
+p tree.height
+p tree.balanced?
+tree.rebalance(tree.root)
+p tree.level_order
+p tree.preorder
+p tree.postorder
+p tree.inorder
+p tree.balanced?
+p tree
+puts
+puts
