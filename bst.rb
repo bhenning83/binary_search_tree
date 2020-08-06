@@ -114,6 +114,23 @@ class Tree
     output
   end
 
+  def height(root = @root, counter = 0)
+    return counter - 1 if root.nil?
+    counter += 1
+    height(root.left_child, counter)
+    height(root.right_child, counter)
+  end
+
+  def balanced?(root = @root)
+    return true if height(root.left_child) - height(root.right_child) <= 1
+    return true if height(root.right_child) - height(root.left_child) <= 1
+    return false
+  end
+
+  def rebalance(tree)
+    level = level_order(tree)
+    build_tree(level)
+  end
 end
 
 test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
@@ -121,7 +138,5 @@ test = [1, 2, 4, 7, 4, 3, 5, 8, 10]
 original = Tree.new(test)
 original.insert(6)
 original.insert(83)
-p original.level_order
-p original.inorder
-p original.preorder
-p original.postorder
+p original.height()
+p original.balanced?
