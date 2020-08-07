@@ -1,4 +1,3 @@
-require 'pry'
 class Node
   include Comparable
   attr_accessor :data, :left_child, :right_child
