@@ -36,7 +36,7 @@ class Tree
 
   def insert(value, root = @root)
     new_node = Node.new(value)
-    # @ary << new_node.data
+    @ary << new_node.data
     if new_node < root
       return root.left_child = new_node if root.left_child.nil?
       insert(value, root.left_child)

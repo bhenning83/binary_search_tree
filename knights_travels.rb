@@ -13,24 +13,30 @@ class Knight
   attr_accessor :current, :target
 
   def initialize(current, target)
-    @current = current
+    @current = Node.new(current)
     @target = target
     @moves = [[-1, 2], [-1, -2], [-2, -1], [-2, 1], [1, 2], [1, -2], [2, 1], [2, -1]]
   end
 
-  def move_knight(current = @current, new_spot = [])
+  def move_knight(current = @current.coord, pos_move = [], queue = [])
     @moves.each do |move|
       current.each_index do |i|
-         new_spot[i] = current[i] + move[i]
+         pos_move[i] = current[i] + move[i]
       end
-      @current = Node.new(new_spot, current) if on_board?(new_spot)
-      p @current
+      new_spot = Node.new(new_spot, @current) if on_board?(pos_move)
       match?
+      queue << new_spot
     end
   end
 
-  def match?(current = @current.coord)
-    p 'GOT IT' if target.eql?(current)
+  def match?(current = @current.coord, queue = [])
+    if target.eql?(current)
+      queue << target
+      @current = @current.parent
+      queue << @current until @current.nil?
+      p queue.reverse
+      exit!
+    end
   end
 
   def on_board?(coord = @coord)
@@ -45,13 +51,13 @@ end
 class Node
   attr_accessor :coord, :parent
 
-  def initialize(coord, parent)
+  def initialize(coord, parent = nil)
     @coord = coord
     @parent = parent
   end
 end
 
-test = Knight.new([3, 4], [4, 2])
+test = Knight.new([3, 4], [5, 1])
 
 test.move_knight
 
