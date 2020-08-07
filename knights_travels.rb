@@ -8,13 +8,29 @@
 #   if not, repeat the process of finding all possible moves
 #   break when target value is reached. 
 # return the path of the nodes that found the value
-
+require 'pry'
 class Knight
   attr_accessor :current, :target
 
   def initialize(current, target)
     @current = current
     @target = target
+    @moves = [[-1, 2], [-1, -2], [-2, -1], [-2, 1], [1, 2], [1, -2], [2, 1], [2, -1]]
+  end
+
+  def move_knight(current = @current, new_spot = [])
+    @moves.each do |move|
+      current.each_index do |i|
+         new_spot[i] = current[i] + move[i]
+      end
+      @current = Node.new(new_spot, current) if on_board?(new_spot)
+      p @current
+      match?
+    end
+  end
+
+  def match?(current = @current.coord)
+    p 'GOT IT' if target.eql?(current)
   end
 
   def on_board?(coord = @coord)
@@ -23,16 +39,19 @@ class Knight
     end
     true
   end
+
 end
 
 class Node
+  attr_accessor :coord, :parent
+
   def initialize(coord, parent)
     @coord = coord
     @parent = parent
   end
 end
 
-test = Knight.new([3, 4], [6, 7])
+test = Knight.new([3, 4], [4, 2])
 
-
+test.move_knight
 
