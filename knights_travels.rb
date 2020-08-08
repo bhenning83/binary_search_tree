@@ -18,25 +18,28 @@ class Knight
     @moves = [[-1, 2], [-1, -2], [-2, -1], [-2, 1], [1, 2], [1, -2], [2, 1], [2, -1]]
   end
 
-  def move_knight(current = @current.coord, pos_move = [], queue = [])
+  def move_knight(current = @current.coord, pos_move = [])
+    ary = []
     @moves.each do |move|
       current.each_index do |i|
          pos_move[i] = current[i] + move[i]
       end
-      new_spot = Node.new(new_spot, @current) if on_board?(pos_move)
-      match?
-      queue << new_spot
+      new_spot = Node.new(pos_move.dup, @current) if on_board?(pos_move)
+      ary << new_spot
+      match?(new_spot)
     end
   end
 
-  def match?(current = @current.coord, queue = [])
-    if target.eql?(current)
+  def match?(node, queue = [])
+    coord = node.coord
+    if target.eql?(coord)
       queue << target
-      @current = @current.parent
-      queue << @current until @current.nil?
+      node = node.parent
+      queue << node until node.nil?
       p queue.reverse
       exit!
     end
+    p 'not yet'
   end
 
   def on_board?(coord = @coord)
@@ -57,7 +60,7 @@ class Node
   end
 end
 
-test = Knight.new([3, 4], [5, 1])
+test = Knight.new([3, 4], [4, 2])
 
 test.move_knight
 
