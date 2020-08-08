@@ -35,11 +35,13 @@ class Knight
     if target.eql?(coord)
       queue << target
       node = node.parent
-      queue << node until node.nil?
+      until node.nil?
+        queue << node.coord 
+        node = node.parent
+      end
       p queue.reverse
       exit!
     end
-    p 'not yet'
   end
 
   def on_board?(coord = @coord)
