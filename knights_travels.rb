@@ -16,6 +16,7 @@ class Knight
     @moves = [[-1, 2], [-1, -2], [-2, -1], [-2, 1], [1, 2], [1, -2], [2, 1], [2, -1]]
     @target_reached = false
     @positions = []
+    find_route
   end
 
   def move_knight(current = @current.coord, pos_move = [])
@@ -75,6 +76,3 @@ class Knight
     end
   end
 end
-
-test = Knight.new([1,1], [8,8])
-test.find_route
